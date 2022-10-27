@@ -1,7 +1,7 @@
 # RuijieWebAutoLoginCUIT
 基于Python的锐捷V2校园网eportal Web自动登录脚本（成都信息工程大学）
 
-Python源码fork自[PeacherMZ/RuijieWebAutoLogin](https://github.com/PeacherMZ/RuijieWebAutoLogin)仓库
+Python源码fork自[PeacherMZ/RuijieWebAutoLogin](https://github.com/PeacherMZ/RuijieWebAutoLogin)仓库，并对代码细节进行了优化。
 
 ## 环境和依赖
 
