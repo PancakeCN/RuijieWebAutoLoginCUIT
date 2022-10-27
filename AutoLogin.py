@@ -10,8 +10,8 @@ header = {
     'Content-Length': '955',
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
 #   'Cookie': '',  #一定不要带Cookie，不然短时间重复访问会导致需要验证码
-    'Host': '10.8.2.2',
-    'Origin': 'http://10.8.2.2',
+    'Host': '10.254.241.19',
+    'Origin': 'http://10.254.241.19',
     'Referer': '',  #从请求头中获取
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'  #一般无需修改
 }
@@ -32,8 +32,8 @@ dataCheck = {
     'userIndex': ''   #填写post请求中的对应字段，同上
 }
 
-login = 'http://10.8.2.2/eportal/InterFace.do?method=login'                   #登录地址
-checkStatus = 'http://10.8.2.2/eportal/InterFace.do?method=getOnlineUserInfo' #验证地址
+login = 'http://10.254.241.19/eportal/InterFace.do?method=login'                   #登录地址
+checkStatus = 'http://10.254.241.19/eportal/InterFace.do?method=getOnlineUserInfo' #验证地址
 
 
 def work():
