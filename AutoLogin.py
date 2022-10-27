@@ -9,56 +9,79 @@ header = {
     'Connection': 'keep-alive',
     'Content-Length': '955',
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-#   'Cookie': '',  #一定不要带Cookie，不然短时间重复访问会导致需要验证码
+    # 一定不要带Cookie，不然短时间重复访问会导致需要验证码
+    # 'Cookie': '',
     'Host': '10.254.241.19',
     'Origin': 'http://10.254.241.19',
-    'Referer': '',  #从请求头中获取
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'  #一般无需修改
+    # 从请求头中获取
+    'Referer': '',
+    # 一般无需修改
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36'
 }
 
 dataLogin = {
-    'userId': '',     #填写post请求中的账号
-    'password': '',   #填写post请求中加密过的密码
-    'service': '',    #选择网络接入方式，在post请求中有
-    'queryString': '',#从post请求中复制过来即可
-    'operatorPwd': '',          #不用填
-    'operatorUserId': '',       #不用填
-    'validcode': '',            #不用填
-    'passwordEncrypt': 'true',  #不用修改      
-    'userIndex': ''   #填写post请求中的对应字段
+    # 填写post请求中的账号
+    'userId': '',
+    # 填写post请求中加密过的密码
+    'password': '',
+    # 选择网络接入方式，在post请求中有
+    'service': '',
+    # 从post请求中复制过来即可
+    'queryString': '',
+    # 不用填
+    'operatorPwd': '',
+    # 不用填
+    'operatorUserId': '',
+    # 不用填
+    'validcode': '',
+    # 不用修改
+    'passwordEncrypt': 'true',
+    # 填写post请求中的对应字段
+    'userIndex': ''
 }
 
 dataCheck = {
-    'userIndex': ''   #填写post请求中的对应字段，同上
+    # 填写post请求中的对应字段，同上
+    'userIndex': ''
 }
 
-login = 'http://10.254.241.19/eportal/InterFace.do?method=login'                   #登录地址
-checkStatus = 'http://10.254.241.19/eportal/InterFace.do?method=getOnlineUserInfo' #验证地址
+# 登录地址
+login = 'http://10.254.241.19/eportal/InterFace.do?method=login'
+# 验证地址
+checkStatus = 'http://10.254.241.19/eportal/InterFace.do?method=getOnlineUserInfo'
 
 
 def work():
     res1 = requests.post(url=checkStatus, headers=header, data=dataCheck)
     res1.encoding = 'utf-8'
-    content = str(res1.text.encode().decode("unicode_escape").encode('raw_unicode_escape').decode())
+    content = str(res1.text.encode().decode(
+        "unicode_escape").encode('raw_unicode_escape').decode())
     i = content.find('"result":"')
     #    print(content)
     if content[i + 10:i + 14] == 'wait':
-        print(time.asctime(time.localtime(time.time())), "当前处于在线状态。")
+        print("\033[0;32;40m", time.strftime("%Y-%m-%d %H:%M:%S",
+                                             time.localtime()), "[INFO] 当前处于在线状态。\033[0m")
     else:
-        print(time.asctime(time.localtime(time.time())), "当前已经下线，正在尝试登录！")
+        print("\033[0;33;40m", time.strftime("%Y-%m-%d %H:%M:%S",
+                                             time.localtime()), "[WARN] 当前已经下线，正在尝试登录！\033[0m")
         res2 = requests.post(url=login, headers=header, data=dataLogin)
         res2.encoding = 'utf-8'
-        content2 = str(res2.text.encode().decode("unicode_escape").encode('raw_unicode_escape').decode())
+        content2 = str(res2.text.encode().decode(
+            "unicode_escape").encode('raw_unicode_escape').decode())
         j = content2.find('"result":"')
         #        print(content2)
         if content2[j + 10:j + 17] == 'success':
-            print(time.asctime(time.localtime(time.time())), "登录成功！")
+            print("\033[0;32;40m", time.strftime("%Y-%m-%d %H:%M:%S",
+                                                 time.localtime()), "[INFO] 登录成功！\033[0m")
 
-while(True):
+
+while (True):
     try:
         work()
     except:
-        print(time.asctime(time.localtime(time.time())), "监测出错，请检查网络是否连通。")
+        print("\033[0;31;40m", time.strftime("%Y-%m-%d %H:%M:%S",
+                                             time.localtime()), "[ERROR] 监测出错，请检查网络是否连通。\033[0m")
         time.sleep(1)
         continue
-    time.sleep(random.randint(20, 40))  #这里间隔20~40秒查询一次状态，切莫太频繁
+    # 这里间隔20~40秒查询一次状态，切莫太频繁
+    time.sleep(random.randint(20, 40))
