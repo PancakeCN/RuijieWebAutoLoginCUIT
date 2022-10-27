@@ -1,6 +1,7 @@
 import requests
 import time
 import random
+import urllib
 
 header = {
     'Accept': '*/*',
@@ -71,13 +72,13 @@ def work():
         j = content2.find('"result":"')
         # print(content2)
         if content2[j + 10:j + 17] == 'success':
-            print("\033[0;32;40m" + time.strftime(timeFormat, time.localtime()) + " [INFO] 账号" + dataLogin['userId'] + "登录成功！接入方式：" + urllib.parse.unquote(dataLogin['service']), "\033[0m")
+            print("\033[0;32;40m" + time.strftime(timeFormat, time.localtime()) + " [INFO] 账号" + dataLogin['userId'] + "登录成功！接入方式：" + urllib.parse.unquote(dataLogin['service']) + "\033[0m")
 
 
 while (True):
     try:
         work()
-    except Error:
+    except:
         print("\033[0;31;40m" + time.strftime(timeFormat, time.localtime()), " [ERROR] 监测出错，请检查网络是否连通。\033[0m")
         time.sleep(1)
         continue
