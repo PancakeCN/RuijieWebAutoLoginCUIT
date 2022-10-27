@@ -50,6 +50,8 @@ login = 'http://10.254.241.19/eportal/InterFace.do?method=login'
 # 验证地址
 checkStatus = 'http://10.254.241.19/eportal/InterFace.do?method=getOnlineUserInfo'
 
+timeFormat = "%Y-%m-%d %H:%M:%S"
+
 
 def work():
     res1 = requests.post(url=checkStatus, headers=header, data=dataCheck)
@@ -57,30 +59,26 @@ def work():
     content = str(res1.text.encode().decode(
         "unicode_escape").encode('raw_unicode_escape').decode())
     i = content.find('"result":"')
-    #    print(content)
+    # print(content)
     if content[i + 10:i + 14] == 'wait':
-        print("\033[0;32;40m", time.strftime("%Y-%m-%d %H:%M:%S",
-                                             time.localtime()), "[INFO] 当前处于在线状态。\033[0m")
+        print("\033[0;32;40m" + time.strftime(timeFormat, time.localtime()) + " [INFO] 账号" + dataLogin['userId'] + "当前处于在线状态。\033[0m")
     else:
-        print("\033[0;33;40m", time.strftime("%Y-%m-%d %H:%M:%S",
-                                             time.localtime()), "[WARN] 当前已经下线，正在尝试登录！\033[0m")
+        print("\033[0;33;40m" + time.strftime(timeFormat, time.localtime()) + " [WARN] 账号" + dataLogin['userId'] + "当前已经下线，正在尝试登录！\033[0m")
         res2 = requests.post(url=login, headers=header, data=dataLogin)
         res2.encoding = 'utf-8'
         content2 = str(res2.text.encode().decode(
             "unicode_escape").encode('raw_unicode_escape').decode())
         j = content2.find('"result":"')
-        #        print(content2)
+        # print(content2)
         if content2[j + 10:j + 17] == 'success':
-            print("\033[0;32;40m", time.strftime("%Y-%m-%d %H:%M:%S",
-                                                 time.localtime()), "[INFO] 登录成功！\033[0m")
+            print("\033[0;32;40m" + time.strftime(timeFormat, time.localtime()) + " [INFO] 账号" + dataLogin['userId'] + "登录成功！接入方式：" + urllib.parse.unquote(dataLogin['service']), "\033[0m")
 
 
 while (True):
     try:
         work()
-    except:
-        print("\033[0;31;40m", time.strftime("%Y-%m-%d %H:%M:%S",
-                                             time.localtime()), "[ERROR] 监测出错，请检查网络是否连通。\033[0m")
+    except Error:
+        print("\033[0;31;40m" + time.strftime(timeFormat, time.localtime()), " [ERROR] 监测出错，请检查网络是否连通。\033[0m")
         time.sleep(1)
         continue
     # 这里间隔20~40秒查询一次状态，切莫太频繁
